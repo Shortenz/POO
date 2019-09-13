@@ -1,4 +1,4 @@
-package exo2;
+package exo3;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -27,7 +27,7 @@ public class Inventory {
 		return null;
 	}
 
-	public List<Guitar> search(Guitar searchGuitar) {
+	public List<Guitar> search(GuitarSpec searchGuitar) {
 
 		List<Guitar> listGuitars = new LinkedList<>();
 

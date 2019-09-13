@@ -1,11 +1,23 @@
 package exo4;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 public class Inventory {
+	
+	private List<Guitar> guitars;
+
+	public Inventory() {
+		guitars = new LinkedList<>();
+	}
+	
+	public void addGuitar(String serialNumber, double price, GuitarSpec guitarSpec) {
+		guitars.add(new Guitar(serialNumber, price, guitarSpec.getBuilder(), guitarSpec.getModel(), guitarSpec.getType(), guitarSpec.getNumStrings(), guitarSpec.getBackWood(), guitarSpec.getTopWood()));
+	}
 
 	private static void initializeInventory(Inventory inventory) {
-	    inventory.addGuitar("11277", 3999.95,
-	      new GuitarSpec(Builder.COLLINGS, "CJ", Type.ACOUSTIC, 6,
-	                     Wood.INDIAN_ROSEWOOD, Wood.SITKA));
+	    inventory.addGuitar("11277", 3999.95, new GuitarSpec(Builder.COLLINGS, "CJ", Type.ACOUSTIC, 6, Wood.INDIAN_ROSEWOOD, Wood.SITKA));
 	    inventory.addGuitar("V95693", 1499.95,
 	      new GuitarSpec(Builder.FENDER, "Stratocastor", Type.ELECTRIC, 6,
 	                     Wood.ALDER, Wood.ALDER));
@@ -36,6 +48,49 @@ public class Inventory {
 	    inventory.addGuitar("6 29584", 2100.95,
 	      new GuitarSpec(Builder.PRS, "Dave Navarro Signature", Type.ELECTRIC,
 	                     6, Wood.MAHOGANY, Wood.MAPLE));
+	}
+	
+	public Guitar getGuitar(String serialNumber) {
+		for (Iterator<Guitar> i = guitars.iterator(); i.hasNext();) {
+			Guitar guitar = i.next();
+			if (guitar.getSerialNumber().equalsIgnoreCase(serialNumber)) {
+				return guitar;
+			}
+		}
+		return null;
+	}
+
+	public List<Guitar> search(GuitarSpec searchGuitar) {
+
+		List<Guitar> listGuitars = new LinkedList<>();
+
+		for (Iterator<Guitar> i = guitars.iterator(); i.hasNext();) {
+			Guitar guitar = i.next();
+			
+			Builder builder = searchGuitar.getBuilder();
+			if (builder != null && !builder.equals(guitar.getGuitarSpec().getBuilder()))
+				continue;
+			
+			String model = searchGuitar.getModel();
+			if ((model != null) && (!model.equals(""))
+					&& (!model.equalsIgnoreCase(guitar.getGuitarSpec().getModel())))
+				continue;
+			
+			Type type = searchGuitar.getType();
+			if ((type != null) && (!type.equals(guitar.getGuitarSpec().getType())))
+				continue;
+			
+			Wood backWood = searchGuitar.getBackWood();
+			if ((backWood != null) && (!backWood.equals(guitar.getGuitarSpec().getBackWood())))
+				continue;
+			
+			Wood topWood = searchGuitar.getTopWood();
+			if ((topWood != null) && (!topWood.equals(guitar.getGuitarSpec().getTopWood())))
+				continue;
+			
+			listGuitars.add(guitar);
+		}
+		return listGuitars;
 	}
 	
 }
